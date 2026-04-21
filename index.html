@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relish World — Fast Food</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Anton&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #6DBF2E;
+    --lime: #AADC45;
+    --dark: #111110;
+    --darker: #0A0A09;
+    --surface: #1A1A18;
+    --surface2: #222220;
+    --red: #E63228;
+    --white: #F5F3EE;
+    --muted: #888880;
+    --gold: #D4A843;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── LOGO SVG ── */
+  .logo-svg { display: block; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(10,10,9,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(109,191,46,0.15);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .nav-logo span em { color: var(--green); font-style: normal; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.875rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--lime); }
+  .nav-cta {
+    background: var(--green); color: var(--dark);
+    border: none; padding: 0.6rem 1.4rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    font-size: 0.85rem; letter-spacing: 0.06em;
+    text-transform: uppercase; cursor: pointer; border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--lime); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 4rem 6rem 6rem;
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 32px; height: 1px; background: var(--green);
+  }
+  .hero-h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    line-height: 1; text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-h1 .red { color: var(--red); }
+  .hero-h1 .green { color: var(--green); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+    max-width: 380px; margin-bottom: 2.5rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green); color: var(--dark);
+    padding: 0.9rem 2rem; font-weight: 500;
+    font-size: 0.9rem; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--lime); transform: translateY(-2px); }
+  .btn-ghost {
+    border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+    padding: 0.9rem 2rem; font-size: 0.9rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none; border-radius: 2px;
+    transition: border-color 0.3s, color 0.3s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-num {
+    font-family: 'Anton', sans-serif; font-size: 2rem;
+    color: var(--lime); line-height: 1;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #0f1f08 0%, #0A2010 50%, #111510 100%);
+  }
+  .hero-img {
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.7; mix-blend-mode: luminosity;
+    filter: contrast(1.1) saturate(1.2);
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, var(--dark) 0%, transparent 30%),
+                linear-gradient(to top, var(--dark) 0%, transparent 40%);
+  }
+  .hero-badge {
+    position: absolute; bottom: 3rem; right: 3rem;
+    width: 120px; height: 120px;
+    background: var(--green); border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Anton', sans-serif; text-transform: uppercase;
+    color: var(--dark); font-size: 0.75rem; letter-spacing: 0.1em;
+    text-align: center; line-height: 1.2;
+    animation: spin-slow 20s linear infinite;
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); } to { transform: rotate(360deg); }
+  }
+  .hero-badge-inner { animation: spin-slow 20s linear reverse infinite; }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    background: var(--green);
+    overflow: hidden; white-space: nowrap;
+    padding: 0.75rem 0;
+  }
+  .marquee-track {
+    display: inline-flex; gap: 0;
+    animation: marquee 30s linear infinite;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-item {
+    font-family: 'Anton', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--dark);
+    padding: 0 2rem;
+  }
+  .marquee-dot { color: var(--dark); opacity: 0.4; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 7rem 0; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 4rem; }
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--green); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 700; line-height: 1.15; margin-bottom: 1.2rem;
+  }
+  .section-title em { color: var(--green); font-style: italic; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--surface); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .about-img-wrap { position: relative; }
+  .about-img {
+    width: 100%; aspect-ratio: 4/5; object-fit: cover;
+    border-radius: 4px;
+    filter: contrast(1.05);
+  }
+  .about-tag {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    background: var(--red); color: var(--white);
+    padding: 1.2rem 1.5rem; border-radius: 4px;
+    font-family: 'Anton', sans-serif; font-size: 1.1rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+  .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.2rem; font-size: 1rem; }
+  .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .feat-card {
+    background: var(--surface2); border-radius: 4px;
+    padding: 1.2rem; border-left: 3px solid var(--green);
+  }
+  .feat-card h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 4px; color: var(--white); }
+  .feat-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── MENU ── */
+  #menu { background: var(--dark); }
+  .menu-tabs {
+    display: flex; gap: 0; margin-bottom: 3.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .menu-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: none; border: none; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1rem 1.5rem; cursor: pointer; white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+    margin-bottom: -1px;
+  }
+  .tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+  .tab-btn:hover { color: var(--white); }
+
+  .menu-panel { display: none; }
+  .menu-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  .menu-card {
+    background: var(--surface); border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden; transition: transform 0.3s, border-color 0.3s;
+  }
+  .menu-card:hover { transform: translateY(-4px); border-color: rgba(109,191,46,0.3); }
+  .menu-card-img { width: 100%; height: 180px; object-fit: cover; display: block; }
+  .menu-card-img.placeholder {
+    height: 180px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+  }
+  .menu-card-body { padding: 1.2rem 1.3rem 1.4rem; }
+  .menu-card-cat {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 6px;
+  }
+  .menu-card-name { font-size: 1rem; font-weight: 500; color: var(--white); margin-bottom: 6px; line-height: 1.3; }
+  .menu-card-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .menu-card-tag {
+    display: inline-block; margin-top: 10px;
+    background: rgba(109,191,46,0.12); color: var(--lime);
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 2px;
+  }
+
+  /* ── SPECIALS ── */
+  #specials { background: var(--surface); overflow: hidden; }
+  .specials-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1.5rem; align-items: start; }
+  .special-hero {
+    grid-row: span 2; background: var(--surface2); border-radius: 4px;
+    overflow: hidden; border: 1px solid rgba(255,255,255,0.06);
+    display: flex; flex-direction: column;
+  }
+  .special-hero img { width: 100%; height: 350px; object-fit: cover; }
+  .special-hero-body { padding: 2rem; flex: 1; }
+  .special-hero-body h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.6rem;
+    font-weight: 700; margin-bottom: 0.8rem; color: var(--white);
+  }
+  .special-hero-body p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+  .special-badge {
+    display: inline-block; background: var(--red);
+    color: var(--white); font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
+    margin-bottom: 0.8rem;
+  }
+
+  .special-card {
+    background: var(--surface2); border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.06); overflow: hidden;
+  }
+  .special-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+  .special-card-body { padding: 1.2rem; }
+  .special-card-body h4 { font-size: 1rem; font-weight: 500; margin-bottom: 5px; color: var(--white); }
+  .special-card-body p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--darker); }
+  .exp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .exp-item { background: var(--darker); padding: 3rem 2.5rem; }
+  .exp-icon {
+    width: 48px; height: 48px; background: rgba(109,191,46,0.12);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .exp-icon svg { width: 22px; height: 22px; fill: var(--green); }
+  .exp-item h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.7rem; }
+  .exp-item p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── GALLERY ── */
+  #gallery { background: var(--dark); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 280px;
+    gap: 12px;
+  }
+  .gallery-item { overflow: hidden; border-radius: 4px; position: relative; }
+  .gallery-item:first-child { grid-row: span 2; }
+  .gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s ease; display: block;
+    filter: saturate(0.9);
+  }
+  .gallery-item:hover img { transform: scale(1.06); filter: saturate(1.1); }
+  .gallery-item .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .gallery-item:hover .overlay { opacity: 1; }
+
+  /* ── CTA BAND ── */
+  #cta-band {
+    background: var(--green);
+    padding: 5rem 0;
+  }
+  .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  .cta-inner h2 {
+    font-family: 'Anton', sans-serif; font-size: clamp(2rem, 4vw, 3rem);
+    text-transform: uppercase; color: var(--dark); line-height: 1.1;
+  }
+  .cta-inner p { color: rgba(0,0,0,0.6); font-size: 1rem; margin-top: 0.5rem; }
+  .btn-dark {
+    background: var(--dark); color: var(--white);
+    padding: 1rem 2.2rem; font-size: 0.9rem; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none; border-radius: 2px;
+    white-space: nowrap; font-weight: 500;
+    transition: background 0.3s; display: inline-block;
+  }
+  .btn-dark:hover { background: #000; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--darker);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 4rem 0 2rem;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 3rem; margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-top: 1rem; }
+  .footer-col h5 {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 1.2rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col ul a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--white); }
+  .footer-contact p { font-size: 0.875rem; color: var(--muted); line-height: 1.8; }
+  .footer-contact strong { color: var(--white); font-weight: 500; }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem; color: var(--muted);
+  }
+  .footer-bottom span { color: var(--green); }
+
+  /* color band footer */
+  .color-band { display: flex; height: 6px; }
+  .color-band div { flex: 1; }
+  .cb1 { background: #AADC45; opacity: 0.4; }
+  .cb2 { background: #6DBF2E; opacity: 0.6; }
+  .cb3 { background: #3a8c10; opacity: 0.8; }
+  .cb4 { background: #6DBF2E; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    nav { padding: 1rem 2rem; }
+    .container { padding: 0 2rem; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 4rem 2rem; }
+    .hero-right { height: 50vh; }
+    .about-grid, .specials-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:first-child { grid-row: auto; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .cta-inner { flex-direction: column; text-align: center; }
+    .exp-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+      <rect width="44" height="44" rx="8" fill="#1A1A18"/>
+      <path d="M8 8 L36 8 L36 36 L8 36 Z" fill="none" stroke="#6DBF2E" stroke-width="0.5" opacity="0.3"/>
+      <!-- R letter -->
+      <path d="M11 12 L11 32 M11 12 L21 12 Q26 12 26 18 Q26 22 22 23 L28 32" 
+            stroke="#6DBF2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- W letter -->
+      <path d="M19 14 L22 26 L26 18 L30 26 L33 14"
+            stroke="#AADC45" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- dot accent -->
+      <circle cx="33" cy="11" r="2.5" fill="#6DBF2E"/>
+    </svg>
+    <span>Relish<em>World</em></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#specials">Specials</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#cta-band">Visit Us</a></li>
+  </ul>
+
+  <a href="#cta-band" class="nav-cta">Find Us</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Anand's Favourite Fast Food</p>
+    <h1 class="hero-h1">
+      <span class="green">Happiness</span><br>
+      Into Every<br>
+      <span class="red">Bite</span>
+    </h1>
+    <p class="hero-sub">
+      From sizzling grilled sandwiches to crisp dosas and loaded pav bhaji — Relish World serves joy in every bite.
+    </p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Menu Items</div>
+      </div>
+      <div>
+        <div class="stat-num">Pure</div>
+        <div class="stat-label">Vegetarian</div>
+      </div>
+      <div>
+        <div class="stat-num">Fresh</div>
+        <div class="stat-label">Made Daily</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <!-- Hero visual — sandwich illustration via CSS shapes since real img is in PDF -->
+    <div style="width:100%;height:100%;background:radial-gradient(ellipse at 60% 40%, #1a3a0a 0%, #0a1a05 60%, #090d06 100%); display:flex; align-items:center; justify-content:center; position:relative;">
+      <!-- Large SVG sandwich illustration -->
+      <svg width="480" height="520" viewBox="0 0 480 520" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.95;">
+        <!-- Bread top -->
+        <ellipse cx="240" cy="110" rx="165" ry="38" fill="#D4853A"/>
+        <ellipse cx="240" cy="96" rx="165" ry="32" fill="#E8993F"/>
+        <ellipse cx="240" cy="88" rx="160" ry="28" fill="#F0A84A" opacity="0.9"/>
+        <!-- sesame seeds -->
+        <ellipse cx="200" cy="82" rx="6" ry="3" fill="#F5D070" opacity="0.7" transform="rotate(-20 200 82)"/>
+        <ellipse cx="240" cy="76" rx="6" ry="3" fill="#F5D070" opacity="0.7" transform="rotate(10 240 76)"/>
+        <ellipse cx="280" cy="80" rx="6" ry="3" fill="#F5D070" opacity="0.7" transform="rotate(-30 280 80)"/>
+        <ellipse cx="220" cy="92" rx="5" ry="2.5" fill="#F5D070" opacity="0.5" transform="rotate(15 220 92)"/>
+        <!-- Lettuce layer 1 -->
+        <ellipse cx="240" cy="148" rx="185" ry="28" fill="#3D8A2A"/>
+        <path d="M55 148 Q90 128 120 148 Q150 128 180 148 Q210 128 240 148 Q270 128 300 148 Q330 128 360 148 Q390 128 420 148" stroke="#52B535" stroke-width="8" fill="none" opacity="0.8"/>
+        <!-- Cheese drip -->
+        <ellipse cx="240" cy="178" rx="150" ry="18" fill="#F0C840"/>
+        <path d="M200 178 Q210 200 205 220 Q202 235 210 240" stroke="#F0C840" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M260 178 Q265 208 258 230" stroke="#F0C840" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M310 175 Q318 195 315 215" stroke="#F0C840" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <!-- Tomato slices -->
+        <ellipse cx="190" cy="210" rx="55" ry="22" fill="#C0392B"/>
+        <ellipse cx="300" cy="215" rx="50" ry="20" fill="#C0392B"/>
+        <ellipse cx="190" cy="210" rx="42" ry="16" fill="#E74C3C" opacity="0.6"/>
+        <!-- Onion rings -->
+        <ellipse cx="240" cy="250" rx="160" ry="22" fill="#8B5CF6" opacity="0.3"/>
+        <path d="M100 250 Q170 230 240 250 Q310 270 380 250" stroke="#C4B5FD" stroke-width="2" fill="none" opacity="0.6"/>
+        <!-- Capsicum -->
+        <ellipse cx="175" cy="270" rx="30" ry="12" fill="#27AE60" opacity="0.8"/>
+        <ellipse cx="305" cy="268" rx="28" ry="11" fill="#27AE60" opacity="0.8"/>
+        <!-- Lettuce layer 2 -->
+        <ellipse cx="240" cy="295" rx="178" ry="24" fill="#2ECC71" opacity="0.7"/>
+        <path d="M65 295 Q100 275 130 295 Q160 275 190 295 Q220 275 250 295 Q280 275 310 295 Q340 275 370 295 Q400 275 415 295" stroke="#58D68D" stroke-width="7" fill="none" opacity="0.7"/>
+        <!-- Bread bottom -->
+        <ellipse cx="240" cy="330" rx="170" ry="32" fill="#C4752A"/>
+        <ellipse cx="240" cy="320" rx="165" ry="26" fill="#D4853A"/>
+        <!-- Crumbs / particles -->
+        <circle cx="100" cy="150" r="4" fill="#E8993F" opacity="0.6"/>
+        <circle cx="390" cy="130" r="3" fill="#E8993F" opacity="0.4"/>
+        <circle cx="70" cy="280" r="3" fill="#3D8A2A" opacity="0.5"/>
+        <circle cx="420" cy="260" r="5" fill="#3D8A2A" opacity="0.4"/>
+        <circle cx="130" cy="100" r="2.5" fill="#F0A84A" opacity="0.5"/>
+        <circle cx="370" cy="180" r="3.5" fill="#F0C840" opacity="0.6"/>
+        <circle cx="155" cy="340" r="2" fill="#D4853A" opacity="0.4"/>
+        <circle cx="340" cy="110" r="2.5" fill="#F5D070" opacity="0.5"/>
+      </svg>
+
+      <!-- Glow -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top, rgba(0,0,0,0.9), transparent);"></div>
+      <div style="position:absolute;top:0;left:0;right:0;height:30%;background:linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);"></div>
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-inner">
+        <div style="font-size:1.5rem; font-family:'Anton',sans-serif; line-height:1;">Pure</div>
+        <div style="font-size:0.65rem; letter-spacing:0.12em;">VEG · FRESH</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Sandwiches</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Dosas</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Pav Bhaji</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Pizzas</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Garlic Bread</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Uttapam</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Bhel Puri</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Cold Coffee</span><span class="marquee-dot">◆</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Sandwiches</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Dosas</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Pav Bhaji</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Pizzas</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Garlic Bread</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Uttapam</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Bhel Puri</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Cold Coffee</span><span class="marquee-dot">◆</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <!-- Illustrated food image placeholder using SVG -->
+        <div style="width:100%; aspect-ratio:4/5; background:linear-gradient(135deg, #1a2a10 0%, #0f1a08 100%); border-radius:4px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+          <svg width="320" height="380" viewBox="0 0 320 380">
+            <!-- Dosa illustration -->
+            <ellipse cx="160" cy="200" rx="140" ry="50" fill="#C9A44A" opacity="0.9"/>
+            <ellipse cx="160" cy="195" rx="135" ry="44" fill="#D4B05A"/>
+            <!-- curl -->
+            <path d="M30 195 Q80 140 160 160 Q240 140 290 195" stroke="#E8C870" stroke-width="3" fill="none" opacity="0.6"/>
+            <!-- sambar bowl -->
+            <ellipse cx="100" cy="290" rx="38" ry="16" fill="#8B4513"/>
+            <ellipse cx="100" cy="285" rx="38" ry="14" fill="#9B5C2A"/>
+            <path d="M62 285 Q100 270 138 285 Q100 255 62 285" fill="#A0522D" opacity="0.5"/>
+            <!-- chutney bowl -->
+            <ellipse cx="220" cy="290" rx="38" ry="16" fill="#2D6A2D"/>
+            <ellipse cx="220" cy="285" rx="38" ry="14" fill="#3A8A3A"/>
+            <!-- garnish -->
+            <circle cx="160" cy="185" r="8" fill="#52B535"/>
+            <circle cx="145" cy="192" r="6" fill="#E74C3C" opacity="0.8"/>
+            <circle cx="175" cy="190" r="5" fill="#F0C840" opacity="0.8"/>
+            <!-- leaves background -->
+            <ellipse cx="50" cy="120" rx="30" ry="15" fill="#2D5A1B" opacity="0.3" transform="rotate(-30 50 120)"/>
+            <ellipse cx="270" cy="130" rx="25" ry="12" fill="#2D5A1B" opacity="0.3" transform="rotate(25 270 130)"/>
+            <!-- plate circle under -->
+            <ellipse cx="160" cy="210" rx="150" ry="55" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.1"/>
+          </svg>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+            <p style="font-family:'Anton',sans-serif;font-size:1rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--lime);">Anand, Gujarat</p>
+          </div>
+        </div>
+        <div class="about-tag">Since<br>2010s</div>
+      </div>
+
+      <div class="about-text reveal" style="transition-delay:0.15s;">
+        <p class="section-label">Our Story</p>
+        <h2 class="section-title">Where <em>Fast Food</em> Meets Soul</h2>
+        <p>Relish World was born from a simple belief: fast food should taste like it was made with love. Located in the heart of Anand, we've been crafting vegetarian fast food that brings the whole family together.</p>
+        <p>Every sandwich is grilled to golden perfection. Every dosa is made fresh to order. Every bhaji is simmered with the kind of care you can taste in every bite.</p>
+        <div class="about-features">
+          <div class="feat-card">
+            <h4>100% Vegetarian</h4>
+            <p>Pure veg kitchen — every item, every time.</p>
+          </div>
+          <div class="feat-card">
+            <h4>Made to Order</h4>
+            <p>Fresh ingredients prepared when you order.</p>
+          </div>
+          <div class="feat-card">
+            <h4>100+ Varieties</h4>
+            <p>Sandwiches, pizzas, dosas, bhel & more.</p>
+          </div>
+          <div class="feat-card">
+            <h4>Jain Friendly</h4>
+            <p>Jain options available across our menu.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="container">
+    <p class="section-label reveal">What We Serve</p>
+    <h2 class="section-title reveal" style="transition-delay:0.1s;">Our <em>Full Menu</em></h2>
+
+    <div class="menu-tabs">
+      <button class="tab-btn active" onclick="switchTab('sandwiches', this)">Sandwiches</button>
+      <button class="tab-btn" onclick="switchTab('grilled', this)">Grilled</button>
+      <button class="tab-btn" onclick="switchTab('pizza', this)">Pizza</button>
+      <button class="tab-btn" onclick="switchTab('dosa', this)">Dosa</button>
+      <button class="tab-btn" onclick="switchTab('pavbhaji', this)">Pav Bhaji</button>
+      <button class="tab-btn" onclick="switchTab('toast', this)">Toast & Bread</button>
+      <button class="tab-btn" onclick="switchTab('uttapam', this)">Uttapam</button>
+      <button class="tab-btn" onclick="switchTab('drinks', this)">Drinks</button>
+    </div>
+
+    <!-- Sandwiches -->
+    <div id="tab-sandwiches" class="menu-panel active">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🥪</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Classic</p>
+          <h3 class="menu-card-name">Chutney Sandwich</h3>
+          <p class="menu-card-desc">Classic green chutney between soft bread slices.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🥗</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Classic</p>
+          <h3 class="menu-card-name">Vegetable Sandwich</h3>
+          <p class="menu-card-desc">Loaded with fresh seasonal vegetables.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🧀</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Classic</p>
+          <h3 class="menu-card-name">Cheese Sandwich</h3>
+          <p class="menu-card-desc">Generously filled with melted cheese.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🥙</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Mix (3 slices)</p>
+          <h3 class="menu-card-name">Bombay Veg Sandwich</h3>
+          <p class="menu-card-desc">The Bombay classic — three slices, big flavour.</p>
+          <span class="menu-card-tag">Best Seller</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🫓</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Mix (3 slices)</p>
+          <h3 class="menu-card-name">Veg. Cheese Jam</h3>
+          <p class="menu-card-desc">A sweet-savory combo with jam and cheese.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌶️</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Supreme (3 slices)</p>
+          <h3 class="menu-card-name">Western Supreme</h3>
+          <p class="menu-card-desc">Chilli, cheese, olive, jalapeño, corn, tomato, onion, cabbage & capsicum.</p>
+          <span class="menu-card-tag">Chef's Pick</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grilled -->
+    <div id="tab-grilled" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🔥</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Grilled (2 slices)</p>
+          <h3 class="menu-card-name">Veg. Cheese Grilled</h3>
+          <p class="menu-card-desc">Grilled to a golden crisp with cheese inside.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🧄</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Grilled (2 slices)</p>
+          <h3 class="menu-card-name">Aloo Garlic Grilled</h3>
+          <p class="menu-card-desc">Spiced potato filling with a punch of garlic.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌽</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Grilled Special</p>
+          <h3 class="menu-card-name">Paneer Corn</h3>
+          <p class="menu-card-desc">Cheese, paneer, corn, coriander, chilli, capsicum, onion & green chutney.</p>
+          <span class="menu-card-tag">Best Seller</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍄</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Grilled Special</p>
+          <h3 class="menu-card-name">Mushroom Grilled</h3>
+          <p class="menu-card-desc">Mushroom, capsicum, green chilli, onion, cooked in butter & mayo.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌶️</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Grilled Special</p>
+          <h3 class="menu-card-name">Mexica Grilled</h3>
+          <p class="menu-card-desc">Beans, red chilli, onion & cheese — bold Mexican flavours.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🥗</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Club (3 slices)</p>
+          <h3 class="menu-card-name">Junglee Paneer Club</h3>
+          <p class="menu-card-desc">Cheese, cabbage, coriander, carrot, paneer, coconut, chilli, capsicum & spices.</p>
+          <span class="menu-card-tag">Chef's Pick</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pizza -->
+    <div id="tab-pizza" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍕</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">American Pizza</p>
+          <h3 class="menu-card-name">Gardners Pizza</h3>
+          <p class="menu-card-desc">Cheese, capsicum, black olive, corn & mushroom.</p>
+          <span class="menu-card-tag">Chef's Pick</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌶️</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">American Pizza</p>
+          <h3 class="menu-card-name">Paneer Spicy Pizza</h3>
+          <p class="menu-card-desc">Paneer, chilli, tomato, capsicum, paprika, onion & cheese.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🫘</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">American Pizza</p>
+          <h3 class="menu-card-name">Mexican Pizza</h3>
+          <p class="menu-card-desc">Beans blended in tomato, garlic, onion topped with capsicum & cheese.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍕</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Italian (Crispy)</p>
+          <h3 class="menu-card-name">Double Cheese Italian</h3>
+          <p class="menu-card-desc">Extra cheese on a crispy Italian base — pure indulgence.</p>
+          <span class="menu-card-tag">Favourite</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🫒</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Italian (Crispy)</p>
+          <h3 class="menu-card-name">Olive Cheese Baked Pizza</h3>
+          <p class="menu-card-desc">Olives and melted cheese on a crisp baked base.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍅</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">American Pizza</p>
+          <h3 class="menu-card-name">Margherita Pizza</h3>
+          <p class="menu-card-desc">The timeless classic — tomato, mozzarella, fresh herbs.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dosa -->
+    <div id="tab-dosa" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🫓</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Delicious Dosa</p>
+          <h3 class="menu-card-name">Masala Dosa</h3>
+          <p class="menu-card-desc">Classic spiced potato filling in a crispy dosa.</p>
+          <span class="menu-card-tag">Classic</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌿</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Delicious Dosa</p>
+          <h3 class="menu-card-name">Cheese Pudina Masala</h3>
+          <p class="menu-card-desc">Minty pudina chutney inside with cheese & masala filling.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">📄</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Delicious Dosa</p>
+          <h3 class="menu-card-name">Cheese Paper Masala</h3>
+          <p class="menu-card-desc">Whisper-thin paper dosa with masala and cheese.</p>
+          <span class="menu-card-tag">Best Seller</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌶️</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Delicious Dosa</p>
+          <h3 class="menu-card-name">Mysore Masala</h3>
+          <p class="menu-card-desc">Fiery Mysore chutney smeared inside with masala filling.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🫓</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Special Dosa</p>
+          <h3 class="menu-card-name">Jain Sweet Corn Dosa</h3>
+          <p class="menu-card-desc">A special Jain dosa with sweet corn — no onion, no garlic.</p>
+          <span class="menu-card-tag">Jain</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌾</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Special Dosa</p>
+          <h3 class="menu-card-name">Cheese Rava Onion Chilli Masala</h3>
+          <p class="menu-card-desc">Rava base with onion, chilli, masala & cheese.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pav Bhaji -->
+    <div id="tab-pavbhaji" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍲</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Pav Bhaji</p>
+          <h3 class="menu-card-name">Pav Bhaji</h3>
+          <p class="menu-card-desc">Mumbai's street food king — spiced mashed vegetables with buttered pav.</p>
+          <span class="menu-card-tag">Iconic</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🧈</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Pav Bhaji</p>
+          <h3 class="menu-card-name">Butter Bhaji</h3>
+          <p class="menu-card-desc">Extra butter pav bhaji — the indulgent version.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🧀</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Pav Bhaji</p>
+          <h3 class="menu-card-name">Cheese Pav Bhaji</h3>
+          <p class="menu-card-desc">Cheese melted over the classic bhaji — a crowd pleaser.</p>
+          <span class="menu-card-tag">Best Seller</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍛</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Pulav</p>
+          <h3 class="menu-card-name">Cheese Bhaji Pulav</h3>
+          <p class="menu-card-desc">Bhaji served with fragrant rice and melted cheese.</p>
+          <span class="menu-card-tag">Special</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍚</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Pulav</p>
+          <h3 class="menu-card-name">Tropicana Pulav</h3>
+          <p class="menu-card-desc">Aromatic pulav with a tropical twist of flavours.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌾</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Bhel & Sev Puri</p>
+          <h3 class="menu-card-name">Relish Special Dry Bhel</h3>
+          <p class="menu-card-desc">Our house-special dry bhel — no chutney, pure crunch.</p>
+          <span class="menu-card-tag">Signature</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast & Bread -->
+    <div id="tab-toast" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍞</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Open Toast</p>
+          <h3 class="menu-card-name">Cheese Chilli Toast</h3>
+          <p class="menu-card-desc">Cheese, capsicum, ginger, onion, green chilli & coriander on open toast.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🧄</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Open Toast</p>
+          <h3 class="menu-card-name">Garlic Toast</h3>
+          <p class="menu-card-desc">Garlic cooked in tomato, onion, capsicum & cheese.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🫒</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Open Toast</p>
+          <h3 class="menu-card-name">Olive Toast</h3>
+          <p class="menu-card-desc">Olive, cheese, capsicum, ginger, onion, green chilli & coriander.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🧄</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Garlic Bread (6 pcs)</p>
+          <h3 class="menu-card-name">Cheese Jalapeno</h3>
+          <p class="menu-card-desc">Six pieces of garlicky bread with cheese and jalapeños.</p>
+          <span class="menu-card-tag">Spicy</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌽</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Garlic Bread (6 pcs)</p>
+          <h3 class="menu-card-name">Cheese Corn</h3>
+          <p class="menu-card-desc">Sweet corn and cheese on crispy garlic bread.</p>
+          <span class="menu-card-tag">Kids' Fav</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍞</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Panini</p>
+          <h3 class="menu-card-name">Panini Relish-A / B</h3>
+          <p class="menu-card-desc">Our signature panini with the Relish World special filling.</p>
+          <span class="menu-card-tag">Signature</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Uttapam -->
+    <div id="tab-uttapam" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍳</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Uttapam</p>
+          <h3 class="menu-card-name">Plain Uttapam</h3>
+          <p class="menu-card-desc">Soft and fluffy uttapam — the simple classic.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍅</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Uttapam</p>
+          <h3 class="menu-card-name">Tomato Coriander Uttapam</h3>
+          <p class="menu-card-desc">Fresh tomatoes and coriander baked into the uttapam.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌶️</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Uttapam</p>
+          <h3 class="menu-card-name">Onion Chilli Coriander</h3>
+          <p class="menu-card-desc">Crispy edges with onion, green chilli & fresh coriander.</p>
+          <span class="menu-card-tag">Best Seller</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🥗</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Uttapam</p>
+          <h3 class="menu-card-name">Veg. Uttapam</h3>
+          <p class="menu-card-desc">Loaded with mixed vegetables for a hearty meal.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🌶️</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Uttapam</p>
+          <h3 class="menu-card-name">Capsicum Uttapam</h3>
+          <p class="menu-card-desc">Capsicum-loaded uttapam with a subtle smoky note.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🍳</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Uttapam</p>
+          <h3 class="menu-card-name">Masala Uttapam</h3>
+          <p class="menu-card-desc">Spiced masala uttapam — bold and warming flavours.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drinks -->
+    <div id="tab-drinks" class="menu-panel">
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">☕</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Coffee</p>
+          <h3 class="menu-card-name">Cold Coffee</h3>
+          <p class="menu-card-desc">Chilled and creamy cold coffee — the perfect refresher.</p>
+          <span class="menu-card-tag">Popular</span>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">☕</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Coffee</p>
+          <h3 class="menu-card-name">Espresso Coffee</h3>
+          <p class="menu-card-desc">Strong, bold espresso to energize your visit.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">🥤</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Soft Drinks</p>
+          <h3 class="menu-card-name">Cold Drinks</h3>
+          <p class="menu-card-desc">Refreshing chilled beverages in 200ml or 500ml.</p>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img placeholder">💧</div>
+        <div class="menu-card-body">
+          <p class="menu-card-cat">Drinks</p>
+          <h3 class="menu-card-name">Mineral Water</h3>
+          <p class="menu-card-desc">Pure, chilled mineral water.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALS -->
+<section id="specials">
+  <div class="container">
+    <p class="section-label reveal">House Favourites</p>
+    <h2 class="section-title reveal" style="transition-delay:0.1s;margin-bottom:2.5rem;">Our <em>Signature</em> Dishes</h2>
+    <div class="specials-grid">
+      <div class="special-hero reveal">
+        <div style="height:350px;background:linear-gradient(135deg,#1a2a08,#0f1808);display:flex;align-items:center;justify-content:center;">
+          <svg width="280" height="300" viewBox="0 0 280 300">
+            <!-- Pav Bhaji illustration -->
+            <ellipse cx="140" cy="220" rx="120" ry="40" fill="#8B6914" opacity="0.5"/>
+            <!-- Bowl -->
+            <path d="M40 170 Q140 230 240 170 L230 210 Q140 260 50 210 Z" fill="#5C3317"/>
+            <path d="M50 170 Q140 210 230 170" fill="none" stroke="#7A4526" stroke-width="3"/>
+            <!-- Bhaji -->
+            <ellipse cx="140" cy="165" rx="90" ry="30" fill="#8B4513"/>
+            <ellipse cx="140" cy="158" rx="88" ry="28" fill="#A0522D"/>
+            <!-- toppings -->
+            <circle cx="120" cy="155" r="6" fill="#E74C3C" opacity="0.8"/>
+            <circle cx="155" cy="152" r="5" fill="#27AE60" opacity="0.9"/>
+            <circle cx="140" cy="160" r="4" fill="#F0C840" opacity="0.7"/>
+            <ellipse cx="100" cy="158" r="3" ry="4" fill="#C0392B" opacity="0.7"/>
+            <!-- Pav bread -->
+            <ellipse cx="70" cy="130" rx="38" ry="20" fill="#D4853A"/>
+            <ellipse cx="70" cy="124" rx="36" ry="17" fill="#E8993F"/>
+            <ellipse cx="200" cy="133" rx="38" ry="20" fill="#D4853A"/>
+            <ellipse cx="200" cy="127" rx="36" ry="17" fill="#E8993F"/>
+            <!-- butter -->
+            <ellipse cx="70" cy="122" rx="15" ry="6" fill="#F5E050" opacity="0.7"/>
+            <ellipse cx="200" cy="125" rx="14" ry="5" fill="#F5E050" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="special-hero-body">
+          <span class="special-badge">Signature</span>
+          <h3>Relish World Pav Bhaji</h3>
+          <p>Our take on Mumbai's most beloved street food. Simmered slow, spiced right, served with buttered pav. It's the dish that keeps people coming back.</p>
+        </div>
+      </div>
+
+      <div class="special-card reveal" style="transition-delay:0.15s;">
+        <div style="height:160px;background:linear-gradient(135deg,#1a1008,#0a0f05);display:flex;align-items:center;justify-content:center;font-size:4rem;">🥙</div>
+        <div class="special-card-body">
+          <span class="special-badge" style="font-size:0.6rem;padding:3px 8px;">Chef's Pick</span>
+          <h4>Junglee Paneer Club</h4>
+          <p>Cheese, paneer, coconut, spices — three slices of extraordinary.</p>
+        </div>
+      </div>
+
+      <div class="special-card reveal" style="transition-delay:0.2s;">
+        <div style="height:160px;background:linear-gradient(135deg,#1a1208,#0f0e05);display:flex;align-items:center;justify-content:center;font-size:4rem;">🍕</div>
+        <div class="special-card-body">
+          <span class="special-badge" style="font-size:0.6rem;padding:3px 8px;">Most Loved</span>
+          <h4>Paneer Spicy Pizza</h4>
+          <p>Paneer, paprika, chilli and cheese — the pizza that dares.</p>
+        </div>
+      </div>
+
+      <div class="special-card reveal" style="transition-delay:0.25s;">
+        <div style="height:160px;background:linear-gradient(135deg,#0f1a08,#080f04);display:flex;align-items:center;justify-content:center;font-size:4rem;">🫓</div>
+        <div class="special-card-body">
+          <span class="special-badge" style="font-size:0.6rem;padding:3px 8px;">Fan Favourite</span>
+          <h4>Cheese Paper Masala Dosa</h4>
+          <p>Paper-thin crispy dosa with masala and melted cheese.</p>
+        </div>
+      </div>
+
+      <div class="special-card reveal" style="transition-delay:0.3s;">
+        <div style="height:160px;background:linear-gradient(135deg,#1a0a08,#0f0504);display:flex;align-items:center;justify-content:center;font-size:4rem;">🍞</div>
+        <div class="special-card-body">
+          <span class="special-badge" style="font-size:0.6rem;padding:3px 8px;">Classic</span>
+          <h4>Bombay Veg Sandwich</h4>
+          <p>The quintessential Bombay sandwich — loaded and legendary.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label reveal">Why Relish World</p>
+    <h2 class="section-title reveal" style="transition-delay:0.1s;margin-bottom:3rem;">The <em>Relish</em> Promise</h2>
+    <div class="exp-grid reveal" style="transition-delay:0.2s;">
+      <div class="exp-item">
+        <div class="exp-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <h3>100% Pure Vegetarian</h3>
+        <p>Our kitchen has never served non-veg. Every ingredient, every sauce, every item is completely vegetarian — so you can eat with complete peace of mind.</p>
+      </div>
+      <div class="exp-item">
+        <div class="exp-icon">
+          <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+        </div>
+        <h3>Made Fresh to Order</h3>
+        <p>We don't believe in pre-made. Every sandwich, every dosa, every pizza is freshly prepared when you order it. Worth the wait — every single time.</p>
+      </div>
+      <div class="exp-item">
+        <div class="exp-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </div>
+        <h3>Family Favourites</h3>
+        <p>From kids who love our cheese garlic bread to adults who swear by our dosas — Relish World has something for every member of your family to love.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <p class="section-label reveal">Food Mood</p>
+    <h2 class="section-title reveal" style="transition-delay:0.1s;margin-bottom:2.5rem;">A Feast for the <em>Eyes</em></h2>
+    <div class="gallery-grid reveal" style="transition-delay:0.2s;">
+      <!-- Large feature cell -->
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a3a0a,#0a1808);display:flex;align-items:center;justify-content:center;position:relative;">
+          <svg width="100%" height="100%" viewBox="0 0 400 572" preserveAspectRatio="xMidYMid slice">
+            <!-- Sandwich explosion -->
+            <ellipse cx="200" cy="230" rx="165" ry="40" fill="#E8993F"/>
+            <ellipse cx="200" cy="218" rx="160" ry="34" fill="#F0A84A"/>
+            <ellipse cx="200" cy="265" rx="180" ry="28" fill="#3D8A2A"/>
+            <path d="M25 265 Q90 245 150 265 Q210 245 270 265 Q330 245 375 265" stroke="#52B535" stroke-width="10" fill="none" opacity="0.7"/>
+            <ellipse cx="200" cy="300" rx="145" ry="20" fill="#F0C840"/>
+            <path d="M170 300 Q175 325 168 345" stroke="#F0C840" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <path d="M230 300 Q232 318 226 338" stroke="#F0C840" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <ellipse cx="160" cy="330" rx="52" ry="20" fill="#C0392B"/>
+            <ellipse cx="255" cy="335" rx="48" ry="18" fill="#C0392B"/>
+            <ellipse cx="200" cy="370" rx="172" ry="26" fill="#2ECC71" opacity="0.6"/>
+            <ellipse cx="200" cy="405" rx="168" ry="32" fill="#C4752A"/>
+            <ellipse cx="200" cy="395" rx="163" ry="27" fill="#D4853A"/>
+            <!-- crumbs -->
+            <circle cx="60" cy="250" r="5" fill="#E8993F" opacity="0.5"/>
+            <circle cx="355" cy="230" r="4" fill="#E8993F" opacity="0.4"/>
+            <circle cx="40" cy="340" r="4" fill="#3D8A2A" opacity="0.5"/>
+            <circle cx="370" cy="310" r="6" fill="#3D8A2A" opacity="0.4"/>
+            <circle cx="100" cy="195" r="3" fill="#F0A84A" opacity="0.5"/>
+            <circle cx="320" cy="180" r="3.5" fill="#F5D070" opacity="0.5"/>
+          </svg>
+          <div class="overlay"></div>
+        </div>
+      </div>
+
+      <!-- Small cells -->
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;background:linear-gradient(160deg,#1a0f06,#0a0804);display:flex;align-items:center;justify-content:center;">
+          <svg width="100%" height="100%" viewBox="0 0 300 280" preserveAspectRatio="xMidYMid slice">
+            <!-- Pizza -->
+            <circle cx="150" cy="140" r="110" fill="#C4752A" opacity="0.9"/>
+            <circle cx="150" cy="140" r="100" fill="#D4853A"/>
+            <!-- toppings -->
+            <circle cx="130" cy="120" r="18" fill="#E74C3C" opacity="0.8"/>
+            <circle cx="170" cy="155" r="16" fill="#E74C3C" opacity="0.7"/>
+            <circle cx="115" cy="165" r="14" fill="#27AE60" opacity="0.8"/>
+            <circle cx="190" cy="120" r="12" fill="#27AE60" opacity="0.7"/>
+            <circle cx="150" cy="140" r="10" fill="#F5D070" opacity="0.9"/>
+            <circle cx="135" cy="175" r="8" fill="#2C3E50" opacity="0.7"/>
+            <circle cx="165" cy="100" r="7" fill="#2C3E50" opacity="0.6"/>
+            <!-- cheese -->
+            <circle cx="150" cy="140" r="98" fill="none" stroke="#F0C840" stroke-width="4" stroke-dasharray="8,6" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="overlay"></div>
+      </div>
+
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;background:linear-gradient(160deg,#0a1a06,#060f04);display:flex;align-items:center;justify-content:center;">
+          <svg width="100%" height="100%" viewBox="0 0 300 280" preserveAspectRatio="xMidYMid slice">
+            <!-- Pav bhaji overhead -->
+            <circle cx="150" cy="140" r="95" fill="#5C3317"/>
+            <circle cx="150" cy="140" r="88" fill="#7A4526"/>
+            <ellipse cx="150" cy="138" rx="82" ry="80" fill="#A0522D"/>
+            <circle cx="130" cy="125" r="8" fill="#E74C3C" opacity="0.8"/>
+            <circle cx="162" cy="120" r="6" fill="#27AE60" opacity="0.9"/>
+            <circle cx="148" cy="145" r="5" fill="#F0C840" opacity="0.7"/>
+            <circle cx="120" cy="152" r="4" fill="#C0392B" opacity="0.7"/>
+            <circle cx="172" cy="148" r="5" fill="#27AE60" opacity="0.6"/>
+            <!-- butter dollop -->
+            <ellipse cx="145" cy="130" rx="18" ry="12" fill="#F5E050" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="overlay"></div>
+      </div>
+
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;background:linear-gradient(160deg,#1a1206,#0d0b04);display:flex;align-items:center;justify-content:center;">
+          <svg width="100%" height="100%" viewBox="0 0 300 280" preserveAspectRatio="xMidYMid slice">
+            <!-- Dosa -->
+            <ellipse cx="150" cy="150" rx="120" ry="45" fill="#C9A44A" opacity="0.9"/>
+            <ellipse cx="150" cy="144" rx="116" ry="40" fill="#D4B05A"/>
+            <path d="M35 144 Q90 116 150 130 Q210 116 265 144" stroke="#E8C870" stroke-width="3" fill="none" opacity="0.6"/>
+            <ellipse cx="100" cy="210" rx="35" ry="14" fill="#8B4513"/>
+            <ellipse cx="100" cy="206" rx="33" ry="12" fill="#9B5C2A"/>
+            <ellipse cx="205" cy="213" rx="32" ry="14" fill="#2D6A2D"/>
+            <ellipse cx="205" cy="208" rx="30" ry="11" fill="#3A8A3A"/>
+            <circle cx="150" cy="138" rx="7" r="7" fill="#52B535"/>
+          </svg>
+        </div>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div id="cta-band">
+  <div class="container">
+    <div class="cta-inner">
+      <div>
+        <h2>Visit Us in Anand</h2>
+        <p>B9/10, Sanket Towers, Near Grid, Anand — 388 001</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem;align-items:flex-end;">
+        <a href="tel:+912692248946" class="btn-dark">📞 +91-2692-248946</a>
+        <a href="tel:+919824170707" class="btn-dark">📱 +91 98241 70707</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="52" height="52" rx="10" fill="#1A1A18"/>
+          <path d="M12 14 L12 38 M12 14 L24 14 Q30 14 30 21 Q30 26 25 27 L33 38"
+                stroke="#6DBF2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M22 17 L26 31 L31 22 L36 31 L40 17"
+                stroke="#AADC45" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="40" cy="13" r="3" fill="#6DBF2E"/>
+        </svg>
+        <p style="margin-top:1rem;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--white);">Relish<span style="color:var(--green);">World</span></p>
+        <p>Happiness into every bite. Anand's favourite vegetarian fast food destination since day one.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Menu</h5>
+        <ul>
+          <li><a href="#menu">Sandwiches</a></li>
+          <li><a href="#menu">Grilled</a></li>
+          <li><a href="#menu">Pizza</a></li>
+          <li><a href="#menu">Dosa</a></li>
+          <li><a href="#menu">Pav Bhaji</a></li>
+          <li><a href="#menu">Uttapam</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Info</h5>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#specials">Specials</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#experience">Our Promise</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <h5>Find Us</h5>
+        <p>
+          <strong>B9/10, Sanket Towers</strong><br>
+          Near Grid, Anand — 388 001<br>
+          Gujarat, India<br><br>
+          <strong>+91-2692-248946</strong><br>
+          +91 98241 70707
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <span>Relish World Fast Food</span>. All rights reserved.</p>
+      <p>Pure Veg · Anand, Gujarat</p>
+    </div>
+  </div>
+</footer>
+
+<div class="color-band">
+  <div class="cb1"></div>
+  <div class="cb2"></div>
+  <div class="cb3"></div>
+  <div class="cb4"></div>
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Active nav link highlight
+const sections = document.querySelectorAll('section[id], div[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--lime)' : '';
+  });
+});
+</script>
+</body>
+</html>
